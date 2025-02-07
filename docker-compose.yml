@@ -1,0 +1,26 @@
+services:
+  openvscode-server:
+    build:
+      context: .
+      args:
+        - EXERCISM_VERSION=${EXERCISM_VERSION}
+        - EXERCISM_TOKEN=${EXERCISM_TOKEN}
+        - EXERCISM_WORKSPACE=${EXERCISM_WORKSPACE}
+        - GIT_USERNAME=${GIT_USERNAME}
+        - GIT_EMAIL=${GIT_EMAIL}
+      dockerfile: Dockerfile
+    env_file:
+      - .env      
+    container_name: openvscode-server
+    environment:
+        - PUID=1000 # User ID
+        - PGID=1000 # Group ID
+        - TZ=Europe/Berlin
+    volumes:
+      - config:/config
+#      - /var/lib/docker:/docker
+    ports:
+      - 8443:3000
+    restart: unless-stopped
+Volumes:
+  config:
